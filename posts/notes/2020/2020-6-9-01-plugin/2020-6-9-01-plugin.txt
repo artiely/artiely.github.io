@@ -1,0 +1,93 @@
+---
+tag:
+  - vue
+cover: /2022-05-13-12-50-07.png
+date: 2020-6-9
+tinyCover: /cover/2022-05-13-12-50-07.png
+coverWidth: 564
+coverHeight: 1002
+coverPrimary: 0c0c08
+coverSecondary: f3f3f7
+
+---
+
+# vue管理系统从0到1-插件配置
+
+在根目录创建`webpack.plugin.js`
+
+```js
+const path = require('path')
+// https://github.com/lavas-project/vue-skeleton-webpack-plugin
+const SkeletonWebpackPlugin = require('vue-skeleton-webpack-plugin')
+// https://github.com/webpack-contrib/terser-webpack-plugin
+const TerserPlugin = require('terser-webpack-plugin')
+// https://github.com/webpack-contrib/compression-webpack-plugin
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
+// https://github.com/erikdesjardins/zip-webpack-plugin
+const ZipPlugin = require('zip-webpack-plugin')
+
+// 骨架插件 为单页/多页应用生成骨架屏 skeleton，减少白屏时间，在页面完全渲染之前提升用户感知体验
+
+exports.skeleton = new SkeletonWebpackPlugin({
+  webpackConfig: {
+    entry: {
+      app: path.join(__dirname, './src/plugins/skeleton.js'),
+    },
+  },
+  minimize: true,
+  quiet: true,
+})
+
+// 自定义压缩配置
+exports.TerserPlugin = new TerserPlugin({
+  terserOptions: {
+    warnings: false,
+    compress: {
+      drop_debugger: true,
+      drop_console: true,
+    },
+  },
+  sourceMap: false,
+  parallel: true,
+})
+// 打包生产.gz包
+const productionGzipExtensions = ['js', 'css']
+exports.compressionWebpackPlugin = new CompressionWebpackPlugin({
+  algorithm: 'gzip',
+  test: new RegExp(`\\.(${productionGzipExtensions.join('|')})$`),
+  threshold: 10240,
+  minRatio: 0.8,
+})
+// 对打包文件进行压缩 助于后期持续集成发布
+exports.zipPlugin = new ZipPlugin({
+  path: path.join(__dirname, 'dist'),
+  filename: 'dist.zip',
+})
+```
+
+在`vue.config.js`
+
+```js
+// 引入插件
+const {
+  skeleton,
+  TerserPlugin,
+  compressionWebpackPlugin,
+  zipPlugin,
+} = require('./webpack.plugin')
+// 按需加载插件
+const pluginsFnc = () => {
+  if (process.env.NODE_ENV === 'production')
+    return [TerserPlugin, zipPlugin, skeleton, compressionWebpackPlugin]
+
+  else
+    return []
+
+}
+```
+
+首先需要安装对应的依赖
+
+具体使用参照本项目源码或对应的官网
+
+后续会添加更多的插件
