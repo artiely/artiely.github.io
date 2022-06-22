@@ -42,3 +42,7 @@ navMeshSurface.BuildNavMesh();
 ```cs
 allPlayers[i].GetComponent<NavMeshAgent>().SetDestination(new Vector3(Random.Range(13f,14f),0,Random.Range(-3f,2f))); 
 ```
+
+地铁音频来自<https://www.aigei.com/s?q=%E5%9C%B0%E9%93%81&type=sound>
+
+音频剪辑软件<https://audacity.onl/?from=thosefree.com>
