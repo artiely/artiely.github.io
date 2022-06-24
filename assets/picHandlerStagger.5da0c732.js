@@ -1,0 +1,1 @@
+const n=r=>{try{const o=new IntersectionObserver((t,a)=>{const c=t.map(e=>e.isIntersecting?(a.unobserve(e.target),e.target):null).filter(e=>e);r&&r.fromTo(c,{opacity:0,y:"100px"},{opacity:1,y:0,stagger:.2,duration:.5,ease:"Back.easeOut"})});document.querySelectorAll(".cover").forEach(t=>{o.observe(t)})}catch{}};export{n as handlerStagger};
