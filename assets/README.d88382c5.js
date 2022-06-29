@@ -1,0 +1,1 @@
+import{i as r,o as a,c as t,j as o}from"./app.aed5c2e5.js";const s={meta:[]},n={__name:"README",setup(c,{expose:e}){return r({meta:[]}),e({frontmatter:{meta:[]}}),(m,i)=>(a(),t("div"))}};typeof o=="function"&&o(n);export{n as default,s as frontmatter};
